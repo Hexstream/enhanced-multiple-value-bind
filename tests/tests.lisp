@@ -12,9 +12,8 @@
     `(,new-first ,@(cdr form)))
   (defun process (form-to-expected-expansion form)
     (flet ((expand (form)
-             `(is equal
-                  (macroexpand-1 ',form)
-                  ',(funcall form-to-expected-expansion form))))
+             `(is equal ',(funcall form-to-expected-expansion form)
+                  (macroexpand-1 ',form))))
       `(progn
          ,(expand form)
          ,(expand (replace-first 'multiple-value-&bind form))))))
