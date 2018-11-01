@@ -85,7 +85,7 @@
 
       <section id="introduction">
 
-        <p><dfn><cite class="common-lisp library">enhanced-multiple-value-bind</cite></dfn> provides an enhanced <code>multiple-value-bind</code> macro that adds support for lambda list keywords by expanding to a <code>multiple-value-call</code> when necessary. This makes catching multiple-value <code>&amp;rest</code> and <code>&amp;key</code> much more lightweight and convenient. A <code class="common-lisp library macro operator">multiple-value-&amp;bind</code> alias is supported.</p>
+        <p><dfn><cite class="relevant">enhanced-multiple-value-bind</cite></dfn> provides an enhanced <code>multiple-value-bind</code> macro that adds support for lambda list keywords by expanding to a <code>multiple-value-call</code> when necessary. This makes catching multiple-value <code>&amp;rest</code> and <code>&amp;key</code> much more lightweight and convenient. A <code class="relevant">multiple-value-&amp;bind</code> alias is supported.</p>
 
       </section>
 
@@ -99,10 +99,10 @@
 
         <p>Multiple-value <code>&amp;rest</code> and <code>&amp;key</code> are currently not being used a lot (as far as I know), but the awkwardness of using them up to now might have something to do with this state of affairs. Their usefulness and convenience should now be reassessed.</p>
 
-        <p>If <code class="common-lisp library macro operator">enhanced-mvb:multiple-value-bind</code> is invoked without apparent lambda list keywords (symbols beginning with "&amp;"), then it simply expands to <code>cl:multiple-value-bind</code>:</p>
+        <p>If <code class="relevant">enhanced-mvb:multiple-value-bind</code> is invoked without apparent lambda list keywords (symbols beginning with "&amp;"), then it simply expands to <code>cl:multiple-value-bind</code>:</p>
 
         <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">enhanced-mvb:multiple-value-bind</code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
+          <pre class="example"><code class="common-lisp">(<code class="relevant">enhanced-mvb:multiple-value-bind</code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
   ...)
 ==
 (multiple-value-bind (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
@@ -112,7 +112,7 @@
         <p>Else, it simply expands to a <code>multiple-value-call</code> with inline <code>lambda</code>:</p>
 
         <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">enhanced-mvb:multiple-value-bind</code> (<var>a</var> <var>b</var> &amp;rest <var>rest</var>) (values 1 2 3)
+          <pre class="example"><code class="common-lisp">(<code class="relevant">enhanced-mvb:multiple-value-bind</code> (<var>a</var> <var>b</var> &amp;rest <var>rest</var>) (values 1 2 3)
   ...)
 ==
 (multiple-value-call (lambda (<var>a</var> <var>b</var> &amp;rest <var>rest</var>)
@@ -123,24 +123,24 @@
         <p>An interesting consequence of this is that it's easy to accept an exact number of return values (though I'm not sure why you'd want to):</p>
 
         <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="common-lisp library macro operator">multiple-value-bind</code> (<var>a</var> <var>b</var> <var>c</var> &amp;optional) (values 1 2 3 4))
+          <pre class="example"><code class="common-lisp">(<code class="relevant">multiple-value-bind</code> (<var>a</var> <var>b</var> <var>c</var> &amp;optional) (values 1 2 3 4))
 <samp class="error">error &rarr; "Invalid number of arguments: 4"</samp></code></pre>
         </div>
 
         <p>This follows the same principle as <code>values</code> in <code>function</code> type specifiers.</p>
 
-    <p><b>To use <cite class="common-lisp library">enhanced-multiple-value-bind</cite></b>, either refer to the provided <code class="common-lisp library macro operator">multiple-value-bind</code> directly:</p>
+    <p><b>To use <cite class="relevant">enhanced-multiple-value-bind</cite></b>, either refer to the provided <code class="relevant">multiple-value-bind</code> directly:</p>
 
     <div class="scroll">
       <pre class="example"><code class="common-lisp"><span class="comment">;; A bit long...</span>
-(<code class="common-lisp library macro operator">enhanced-multiple-value-bind:multiple-value-bind</code>
+(<code class="relevant">enhanced-multiple-value-bind:multiple-value-bind</code>
       (<var>x</var> <var>y</var> &amp;rest <var>others</var>)
     (values 1 2 3 4)
   (values (* <var>x</var> <var>y</var>) <var>others</var>))
 <samp>&rarr; 2, (3 4)</samp>
 
 <span class="comment">;; Much more managable package nickname.</span>
-(<code class="common-lisp library macro operator">enhanced-mvb:multiple-value-bind</code> (<var>x</var> <var>y</var> &amp;rest <var>others</var>)
+(<code class="relevant">enhanced-mvb:multiple-value-bind</code> (<var>x</var> <var>y</var> &amp;rest <var>others</var>)
     (values 1 2 3 4)
   (values (* <var>x</var> <var>y</var>) <var>others</var>))
 <samp>&rarr; 2, (3 4)</samp></code></pre>
@@ -148,7 +148,7 @@
 
         <p>Or <code class="common-lisp">(:shadowing-import-from #:enhanced-multiple-value-bind #:multiple-value-bind)</code> in your <code>defpackage</code> (or with the package nickname, again). <b>Don't <code>(:use)</code></b>!</p>
 
-        <p><code class="common-lisp library package">enhanced-multiple-value-bind</code> also exports <code class="common-lisp library macro operator">multiple-value-&amp;bind</code>, with exactly the same functionality, so you can <code class="common-lisp">(:import-from #:enhanced-multiple-value-bind #:multiple-value-&amp;bind)</code> in your <code>defpackage</code> instead if you want.</p>
+        <p><code class="relevant">enhanced-multiple-value-bind</code> also exports <code class="relevant">multiple-value-&amp;bind</code>, with exactly the same functionality, so you can <code class="common-lisp">(:import-from #:enhanced-multiple-value-bind #:multiple-value-&amp;bind)</code> in your <code>defpackage</code> instead if you want.</p>
 
       </section>
 
