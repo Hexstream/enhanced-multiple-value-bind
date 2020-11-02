@@ -1,4 +1,4 @@
-Project's home: https://www.hexstreamsoft.com/projects/enhanced-multiple-value-bind/
+Project's home: https://www.hexstreamsoft.com/libraries/enhanced-multiple-value-bind/
 
 
 enhanced-multiple-value-bind provides an enhanced MULTIPLE-VALUE-BIND
@@ -6,76 +6,6 @@ macro that adds support for lambda keywords by expanding to a
 MULTIPLE-VALUE-CALL when necessary. This makes catching multiple-value
 &rest and &key much more lightweight and convenient. A
 MULTIPLE-VALUE-&BIND alias is supported.
-
-Some problems with writing out MULTIPLE-VALUE-CALL with an inline
-LAMBDA, especially with a big LAMBDA body and trivial form arguments
-to m-v-c, compared to MULTIPLE-VALUE-BIND, are:
-
-- "unnatural" order of evaluation (skip over LAMBDA, evaluate values
-  forms, then "come back" for LAMBDA body);
-
-- significant extra indentation for the body.
-
-Multiple-value &rest and &key are currently not being used a lot, but
-the awkwardness of using them up to now might have something to do
-with this state of affairs. Their usefulness and convenience should
-now be reassessed.
-
-
-If enhanced-mvb:MULTIPLE-VALUE-BIND is invoked without apparent lambda
-keywords (symbols beginning with "&"), then it simply expands to
-cl:MULTIPLE-VALUE-BIND:
-
-(enhanced-mvb:multiple-value-bind (a b c) (values 1 2 3)
-  ...)
-==
-(multiple-value-bind (a b c) (values 1 2 3)
-  ...)
-
-Else, it simply expands to a MULTIPLE-VALUE-CALL with inline LAMBDA:
-
-(enhanced-mvb:multiple-value-bind (a b &rest rest) (values 1 2 3)
-  ...)
-==
-(multiple-value-call (lambda (a b &rest rest)
-                       ...)
-  (values 1 2 3))
-
-An interesting consequence of this is that it's easy to accept an
-exact number of return values (though I'm not sure why you'd want to):
-
-(multiple-value-bind (a b c &optional) (values 1 2 3 4))
-error --> "Invalid number of arguments: 4"
-
-This follows the same principle as VALUES in FUNCTION type specifiers.
-CLHS VALUES (type specifier):
-http://www.lispworks.com/documentation/HyperSpec/Body/t_values.htm
-
-
-To use enhanced-multiple-value-bind, either refer to the provided
-MULTIPLE-VALUE-BIND directly:
-
-;; A bit long...
-(enhanced-multiple-value-bind:multiple-value-bind
-      (x y &rest others)
-    (values 1 2 3 4)
-  (values (* x y) others))
-=> 2, (3 4)
-
-;; Much more managable package nickname.
-(enhanced-mvb:multiple-value-bind (x y &rest others)
-    (values 1 2 3 4)
-  (values (* x y) others))
-=> 2, (3 4)
-
-Or (:shadowing-import-from #:enhanced-multiple-value-bind
-#:multiple-value-bind) in your DEFPACKAGE (or with the package
-nickname, again). Don't (:use)!
-
-enhanced-multiple-value-bind also exports MULTIPLE-VALUE-&BIND, with
-exactly the same functionality, so you can (:import-from
-#:enhanced-multiple-value-bind #:multiple-value-&bind) in your
-DEFPACKAGE instead if you want.
 
 
 This library is in the Public Domain.
