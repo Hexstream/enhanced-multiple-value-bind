@@ -1,26 +1,19 @@
 (cl:defpackage #:enhanced-multiple-value-bind_tests
   (:use #:cl #:parachute)
   (:shadowing-import-from #:enhanced-multiple-value-bind #:multiple-value-bind)
-  (:shadowing-import-from #:enhanced-eval-when #:eval-when)
-  (:import-from #:enhanced-multiple-value-bind #:multiple-value-&bind))
+  (:shadowing-import-from #:enhanced-eval-when #:eval-when))
 
 (cl:in-package #:enhanced-multiple-value-bind_tests)
 
 (eval-when t
-  (defun replace-first (new-first form)
-    (check-type form cons)
-    `(,new-first ,@(cdr form)))
   (defun process (form-to-expected-expansion form)
-    (flet ((expand (form)
-             `(is equal ',(funcall form-to-expected-expansion form)
-                  (macroexpand-1 ',form))))
-      `(progn
-         ,(expand form)
-         ,(expand (replace-first 'multiple-value-&bind form))))))
+    `(is equal
+         ',(funcall form-to-expected-expansion form)
+         (macroexpand-1 ',form))))
 
 (defmacro test-passthrough (form)
   (process (lambda (form)
-             (replace-first 'cl:multiple-value-bind form))
+             `(cl:multiple-value-bind ,@(cdr form)))
            form))
 
 (defmacro test-upgrade (form)

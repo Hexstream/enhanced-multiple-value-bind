@@ -1,11 +1,10 @@
 Project's home: https://www.hexstreamsoft.com/libraries/enhanced-multiple-value-bind/
 
 
-enhanced-multiple-value-bind provides an enhanced MULTIPLE-VALUE-BIND
-macro that adds support for lambda keywords by expanding to a
-MULTIPLE-VALUE-CALL when necessary. This makes catching multiple-value
-&rest and &key much more lightweight and convenient. A
-MULTIPLE-VALUE-&BIND alias is supported.
+enhanced-multiple-value-bind provides an enhanced MULTIPLE-VALUE-BIND macro that
+adds support for lambda keywords by expanding to a MULTIPLE-VALUE-CALL when necessary.
+
+This makes catching multiple-value &rest and &key much more lightweight and convenient.
 
 
 This library is in the Public Domain.

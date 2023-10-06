@@ -12,15 +12,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>enhanced-multiple-value-bind | Libraries | HexstreamSoft</title>
     <link rel="stylesheet" type="text/css" href="https://global.hexstream.dev/css/global.css" />
+    <link rel="stylesheet" type="text/css" href="https://global.hexstream.dev/css/section-nav.css" />
     <link rel="stylesheet" type="text/css" href="https://global.hexstream.dev/css/tabs.css" />
     <link rel="stylesheet" type="text/css" href="https://global.hexstream.dev/css/tags.css" />
     <link rel="stylesheet" type="text/css" href="https://global.hexstream.dev/css/cl.css" />
+    <link rel="stylesheet" type="text/css" href="https://global.hexstream.dev/css/cl-definitions.css" />
     <link rel="stylesheet" type="text/css" href="https://www.hexstreamsoft.com/libraries/libraries.css" />
     <link rel="preload" as="font" type="font/woff2" href="https://global.hexstream.dev/fonts/kaushan-script/KaushanScript-Regular.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="https://global.hexstream.dev/fonts/liberation/LiberationSerif-Regular.woff2" crossorigin />
     <link rel="preload" as="image" type="image/svg+xml" href="https://global.hexstream.dev/non-free/images/logos/github.svg" />
     <link rel="preload" as="image" type="image/svg+xml" href="https://global.hexstream.dev/images/logos/public-domain.svg" />
     <link rel="preload" as="image" type="image/svg+xml" href="https://global.hexstream.dev/non-free/images/logos/quicklisp.svg" />
+    <script src="https://global.hexstream.dev/scripts/arrows-madness.mjs" type="module"></script>
     <script src="https://www.hexstreamsoft.com/libraries/libraries.mjs" type="module"></script>
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@HexstreamSoft" />
@@ -48,7 +51,7 @@
 
       </div>
 
-      <p id="last-updated"><span>This page was last updated on </span><time datetime="2018-09-06">6 september 2018</time><span>.</span></p>
+      <p id="last-updated"><span>This page was last updated on </span><time datetime="2018-10-06">6 october 2023</time><span>.</span></p>
 
     </nav>
 
@@ -96,75 +99,219 @@
       <section id="introduction">
 
         <p>
-          <dfn><cite class="relevant">enhanced-multiple-value-bind</cite></dfn> provides an enhanced <code>multiple-value-bind</code> macro that adds<br />support for lambda list keywords by expanding to a <code>multiple-value-call</code> when necessary.
-          <br />
-          This makes catching multiple-value <code>&amp;rest</code> and <code>&amp;key</code> much more lightweight and convenient.
-          <br />
-          A <code class="relevant">multiple-value-&amp;bind</code> alias is supported.
+          <dfn><cite class="relevant">enhanced-multiple-value-bind</cite></dfn> provides an enhanced <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> macro that adds<br />support for lambda list keywords by expanding to a <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> when necessary.
         </p>
+
+        <p>This makes catching multiple-value <code>&amp;rest</code> and <code>&amp;key</code> much more lightweight and convenient.</p>
 
       </section>
 
-      <section id="documentation">
-
-        <p>Some problems with writing out <code>multiple-value-call</code> with an inline <code>lambda</code>, especially with a big <code>lambda</code> body and trivial form arguments to <code>multiple-value-call</code>, compared to <code>multiple-value-bind</code>, are:</p>
+      <nav class="tabs">
         <ul>
-	  <li>"unnatural" order of evaluation (skip over <code>lambda</code>, evaluate values forms, then "come back" for <code>lambda</code> body);</li>
-	  <li>significant extra indentation for the body.</li>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#dictionary">Dictionary</a></li>
         </ul>
+      </nav>
 
-        <p>Multiple-value <code>&amp;rest</code> and <code>&amp;key</code> are currently not being used a lot (as far as I know), but the awkwardness of using them up to now might have something to do with this state of affairs. Their usefulness and convenience should now be reassessed.</p>
+      <section id="overview">
 
-        <p>If <code class="relevant">enhanced-mvb:multiple-value-bind</code> is invoked without apparent lambda list keywords (symbols beginning with "&amp;"), then it simply expands to <code>cl:multiple-value-bind</code>:</p>
+        <h1 class="breadcrumbs-bar">
+          <span class="section-relative-nav">
+            <a href="#overview" class="anchor">⚓</a>
+          </span>
+          <span class="breadcrumbs">
+            <a class="here">Overview</a>
+          </span>
+        </h1>
 
-        <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="relevant">enhanced-mvb:multiple-value-bind</code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
+        <nav class="tabs">
+          <ul>
+            <li><a href="#overview_motivation">Motivation</a></li>
+            <li><a href="#overview_examples">Examples</a></li>
+          </ul>
+        </nav>
+
+        <section id="overview_motivation">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#overview_motivation" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#overview">Overview</a>
+              <span class="crumb"><span class="s"> » </span><a class="here">Motivation</a></span>
+            </span>
+          </h1>
+
+          <p>
+            Some problems with writing out <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> with an inline <code>lambda</code>,
+            <br />
+            especially with a big <code>lambda</code> body and trivial form arguments to <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code>, compared to <code>multiple-value-bind</code>, are:
+          </p>
+
+          <ul>
+	    <li>"unnatural" order of evaluation (skip over <code>lambda</code>, evaluate values forms, then "come back" for <code>lambda</code> body);</li>
+	    <li>significant extra indentation for the body.</li>
+          </ul>
+
+          <p>
+            Multiple-value <code>&amp;rest</code> and <code>&amp;key</code> are currently not being used a lot (as far as I know),
+            <br />
+            but the awkwardness of using them up to now might have something to do with this state of affairs.
+            <br />
+            Their usefulness and convenience should now be reassessed.
+          </p>
+
+        </section>
+
+        <section id="overview_examples">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#overview_examples" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#overview">Overview</a>
+              <span class="crumb"><span class="s"> » </span><a class="here">Examples</a></span>
+            </span>
+          </h1>
+
+          <p>If <code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> is invoked without apparent lambda list keywords (symbols beginning with "&amp;"), then it simply expands to <code>cl:multiple-value-bind</code>:</p>
+
+          <div class="scroll">
+            <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
   ...)
 ==
-(multiple-value-bind (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
+(<code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
   ...)</code></pre>
-        </div>
+          </div>
 
-        <p>Else, it simply expands to a <code>multiple-value-call</code> with inline <code>lambda</code>:</p>
+          <p>Else, it simply expands to a <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> with inline <code>lambda</code>:</p>
 
-        <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="relevant">enhanced-mvb:multiple-value-bind</code> (<var>a</var> <var>b</var> &amp;rest <var>rest</var>) (values 1 2 3)
+          <div class="scroll">
+            <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> (<var>a</var> <var>b</var> &amp;rest <var>rest</var>) (values 1 2 3)
   ...)
 ==
-(multiple-value-call (lambda (<var>a</var> <var>b</var> &amp;rest <var>rest</var>)
+(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a> (lambda (<var>a</var> <var>b</var> &amp;rest <var>rest</var>)
                        ...)
   (values 1 2 3))</code></pre>
-        </div>
+          </div>
 
-        <p>An interesting consequence of this is that it's easy to accept an exact number of return values (though I'm not sure why you'd want to):</p>
+          <p>An interesting consequence of this is that it's easy to accept an exact number of return values (though I'm not sure why you'd want to):</p>
 
-        <div class="scroll">
-          <pre class="example"><code class="common-lisp">(<code class="relevant">multiple-value-bind</code> (<var>a</var> <var>b</var> <var>c</var> &amp;optional) (values 1 2 3 4))
+          <div class="scroll">
+            <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> (<var>a</var> <var>b</var> <var>c</var> &amp;optional) (values 1 2 3 4))
 <samp class="error">error &rarr; "Invalid number of arguments: 4"</samp></code></pre>
-        </div>
+          </div>
 
-        <p>This follows the same principle as <code>values</code> in <code>function</code> type specifiers.</p>
+          <p>This follows the same principle as <code>values</code> in <code>function</code> type specifiers.</p>
 
-    <p><b>To use <cite class="relevant">enhanced-multiple-value-bind</cite></b>, either refer to the provided <code class="relevant">multiple-value-bind</code> directly:</p>
+          <p>Another example:</p>
 
-    <div class="scroll">
-      <pre class="example"><code class="common-lisp"><span class="comment">;; A bit long...</span>
-(<code class="relevant">enhanced-multiple-value-bind:multiple-value-bind</code>
-      (<var>x</var> <var>y</var> &amp;rest <var>others</var>)
-    (values 1 2 3 4)
-  (values (* <var>x</var> <var>y</var>) <var>others</var>))
-<samp>&rarr; 2, (3 4)</samp>
-
-<span class="comment">;; Much more managable package nickname.</span>
-(<code class="relevant">enhanced-mvb:multiple-value-bind</code> (<var>x</var> <var>y</var> &amp;rest <var>others</var>)
+          <div class="scroll">
+            <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> (<var>x</var> <var>y</var> &amp;rest <var>others</var>)
     (values 1 2 3 4)
   (values (* <var>x</var> <var>y</var>) <var>others</var>))
 <samp>&rarr; 2, (3 4)</samp></code></pre>
-    </div>
+          </div>
 
-        <p>Or <code class="common-lisp">(:shadowing-import-from #:enhanced-multiple-value-bind #:multiple-value-bind)</code> in your <code>defpackage</code> (or with the package nickname, again). <b>Don't <code>(:use)</code></b>!</p>
+        </section>
 
-        <p><code class="relevant">enhanced-multiple-value-bind</code> also exports <code class="relevant">multiple-value-&amp;bind</code>, with exactly the same functionality, so you can <code class="common-lisp">(:import-from #:enhanced-multiple-value-bind #:multiple-value-&amp;bind)</code> in your <code>defpackage</code> instead if you want.</p>
+        <nav class="end-of-section-indicator">
+          <a href="#overview">
+            "<span>Overview</span>" end.
+          </a>
+        </nav>
+
+      </section>
+
+      <section id="dictionary">
+
+        <h1 class="breadcrumbs-bar">
+          <span class="section-relative-nav">
+            <a href="#dictionary" class="anchor">⚓</a>
+          </span>
+          <span class="breadcrumbs">
+            <a class="here">Dictionary</a>
+          </span>
+        </h1>
+
+        <nav class="tabs">
+          <ul>
+            <li><a href="#dictionary_enhanced-multiple-value-bind"><span class="type">Package</span> <code>enhanced-multiple-value-bind</code></a></li>
+            <li><a href="#dictionary_multiple-value-bind"><span class="type">Macro</span> <code>multiple-value-bind</code></a></li>
+          </ul>
+        </nav>
+
+        <section id="dictionary_enhanced-multiple-value-bind">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#dictionary_enhanced-multiple-value-bind" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#dictionary">Dictionary</a>
+              <span class="crumb"><span class="s"> » </span><a class="here">enhanced-multiple-value-bind</a></span>
+            </span>
+          </h1>
+
+          <article class="package definition">
+
+            <h1><span class="type">Package</span> <span class="name self">enhanced-multiple-value-bind</span></h1>
+
+            <section class="description">
+              <h1>Description</h1>
+              <p>Simply <code>(:shadowing-import-from #:enhanced-multiple-value-bind #:<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code>)</code> from your <a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_defpkg.htm" target="_blank">defpackage</a>. Don't <code>(:use)</code>!</p>
+            </section>
+
+          </article>
+
+        </section>
+
+        <section id="dictionary_multiple-value-bind">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#dictionary_multiple-value-bind" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#dictionary">Dictionary</a>
+              <span class="crumb"><span class="s"> » </span><a class="here">multiple-value-bind</a></span>
+            </span>
+          </h1>
+
+          <article class="macro definition">
+
+            <h1><span class="type">Macro</span> <span class="name self">multiple-value-bind</span></h1>
+
+            <p class="args-and-retvals"><var>lambda-list</var> <var>values-form</var> &amp;body <var>body</var> =&gt; <var>results</var></p>
+
+            <section class="arguments-and-values">
+              <h1>Arguments and Values</h1>
+              <ul>
+                <li><var>lambda-list</var> -- A list of symbols.</li>
+                <li><var>values-form</var> -- A form.</li>
+                <li><var>body</var> -- An <a href="http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_i.htm#implicit_progn" target="_blank">implicit progn</a>, possibly preceded by declarations.</li>
+                <li><var>results</var> -- the values returned by the <var>body</var>.</li>
+
+              </ul>
+            </section>
+
+            <section class="description">
+              <h1>Description</h1>
+              <p>If <var>lambda-list</var> has no apparent lambda list keywords (symbols beginning with "&amp;"),<br />then directly expand to a standard <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> with the same arguments.</p>
+              <p>Else, expand to <code>`(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a> (lambda ,<var>lambda-list</var> ,@<var>body</var>) ,<var>values-form</var>)</code>.</p>
+            </section>
+
+          </article>
+
+        </section>
+
+        <nav class="end-of-section-indicator">
+          <a href="#dictionary">
+            "<span>Dictionary</span>" end.
+          </a>
+        </nav>
 
       </section>
 

@@ -1,11 +1,10 @@
 (asdf:defsystem #:enhanced-multiple-value-bind_tests
 
-  :author "Jean-Philippe Paradis <hexstream@gmail.com>"
+  :author "Jean-Philippe Paradis <hexstream@hexstreamsoft.com>"
 
-  ;; See the UNLICENSE file for details.
-  :license "Public Domain"
+  :license "Unlicense"
 
-  :description "ENHANCED-MULTIPLE-VALUE-BIND unit tests."
+  :description "enhanced-multiple-value-bind unit tests."
 
   :depends-on ("enhanced-multiple-value-bind"
                "parachute"
