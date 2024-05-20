@@ -99,7 +99,7 @@
       <section id="introduction">
 
         <p>
-          <dfn><cite class="relevant">enhanced-multiple-value-bind</cite></dfn> provides an enhanced <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> macro that adds<br />support for lambda list keywords by expanding to a <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> when necessary.
+          <dfn><cite class="relevant">enhanced-multiple-value-bind</cite></dfn> provides an enhanced <code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> macro that adds<br />support for lambda list keywords by expanding to a <code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> when necessary.
         </p>
 
         <p>This makes catching multiple-value <code>&amp;rest</code> and <code>&amp;key</code> much more lightweight and convenient.</p>
@@ -144,9 +144,9 @@
           </h1>
 
           <p>
-            Some problems with writing out <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> with an inline <code>lambda</code>,
+            Some problems with writing out <code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> with an inline <code>lambda</code>,
             <br />
-            especially with a big <code>lambda</code> body and trivial form arguments to <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code>, compared to <code>multiple-value-bind</code>, are:
+            especially with a big <code>lambda</code> body and trivial form arguments to <code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code>, compared to <code>multiple-value-bind</code>, are:
           </p>
 
           <ul>
@@ -182,17 +182,17 @@
             <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
   ...)
 ==
-(<code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
+(<code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> (<var>a</var> <var>b</var> <var>c</var>) (values 1 2 3)
   ...)</code></pre>
           </div>
 
-          <p>Else, it simply expands to a <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> with inline <code>lambda</code>:</p>
+          <p>Else, it simply expands to a <code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a></code> with inline <code>lambda</code>:</p>
 
           <div class="scroll">
             <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code> (<var>a</var> <var>b</var> &amp;rest <var>rest</var>) (values 1 2 3)
   ...)
 ==
-(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a> (lambda (<var>a</var> <var>b</var> &amp;rest <var>rest</var>)
+(<a href="https://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a> (lambda (<var>a</var> <var>b</var> &amp;rest <var>rest</var>)
                        ...)
   (values 1 2 3))</code></pre>
           </div>
@@ -261,7 +261,7 @@
 
             <section class="description">
               <h1>Description</h1>
-              <p>Simply <code>(:shadowing-import-from #:enhanced-multiple-value-bind #:<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code>)</code> from your <a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_defpkg.htm" target="_blank">defpackage</a>. Don't <code>(:use)</code>!</p>
+              <p>Simply <code>(:shadowing-import-from #:enhanced-multiple-value-bind #:<code class="relevant"><a href="#dictionary_multiple-value-bind">multiple-value-bind</a></code>)</code> from your <a href="https://www.lispworks.com/documentation/HyperSpec/Body/m_defpkg.htm" target="_blank">defpackage</a>. Don't <code>(:use)</code>!</p>
             </section>
 
           </article>
@@ -291,7 +291,7 @@
               <ul>
                 <li><var>lambda-list</var> -- A list of symbols.</li>
                 <li><var>values-form</var> -- A form.</li>
-                <li><var>body</var> -- An <a href="http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_i.htm#implicit_progn" target="_blank">implicit progn</a>, possibly preceded by declarations.</li>
+                <li><var>body</var> -- An <a href="https://www.lispworks.com/documentation/HyperSpec/Body/26_glo_i.htm#implicit_progn" target="_blank">implicit progn</a>, possibly preceded by declarations.</li>
                 <li><var>results</var> -- the values returned by the <var>body</var>.</li>
 
               </ul>
@@ -299,8 +299,8 @@
 
             <section class="description">
               <h1>Description</h1>
-              <p>If <var>lambda-list</var> has no apparent lambda list keywords (symbols beginning with "&amp;"),<br />then directly expand to a standard <code><a href="http://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> with the same arguments.</p>
-              <p>Else, expand to <code>`(<a href="http://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a> (lambda ,<var>lambda-list</var> ,@<var>body</var>) ,<var>values-form</var>)</code>.</p>
+              <p>If <var>lambda-list</var> has no apparent lambda list keywords (symbols beginning with "&amp;"),<br />then directly expand to a standard <code><a href="https://www.lispworks.com/documentation/HyperSpec/Body/m_multip.htm" target="_blank">multiple-value-bind</a></code> with the same arguments.</p>
+              <p>Else, expand to <code>`(<a href="https://www.lispworks.com/documentation/HyperSpec/Body/s_multip.htm" target="_blank">multiple-value-call</a> (lambda ,<var>lambda-list</var> ,@<var>body</var>) ,<var>values-form</var>)</code>.</p>
             </section>
 
           </article>
